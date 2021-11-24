@@ -69,6 +69,52 @@ def main():
         res = merge_lappyr(pyr)
 
         cv.imshow('laplacian pyramid filter', res)
+        
+        pil_image = Image.fromarray(result.astype(np.uint8))
+        # pil_image = Image.open('Image.jpg').convert('RGB') 
+        open_cv_image = np.array(pil_image)
+        open_cv_image = open_cv_image[:, :, ::-1].copy()
+        edged = cv.cvtColor(open_cv_image, cv.COLOR_BGR2GRAY)
+        kernel = np.ones((3,3),np.uint8)
+        for i in range(1):
+            pass
+        
+        # cv.imshow("edged1", edged)
+        cv.imshow("edged3", edged)
+        kernel2 = np.array([[-1,-1,-1], 
+                       [-1, 9,-1],
+                       [-1,-1,-1]])
+        edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.
+        cnts = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+        cnts = imutils.grab_contours(cnts)
+        cnts = sorted(cnts, key=cv.contourArea, reverse=True)
+        screenCnt = []
+        for c in cnts:
+            peri = cv.arcLength(c, True)
+            approx = cv.approxPolyDP(c, 15, True)
+
+            if len(approx) == 7:
+                screenCnt.append(approx)
+                
+        if screenCnt is not []:
+            cv.drawContours(frame, screenCnt, -1, (0, 255, 0), 3)
+            cv.imshow("Arrow", frame)
+            cv.imshow("edged", edged)
+
+            # k = cv.waitKey(30)
+            # if k == 27:
+            #     return
+            # cv.waitKey(0)
+        # else:
+        #     cv.imshow("No arrow", result)
+        #     cv.waitKey(0)
+        
+        # Display Output
+        cv.imshow("Laplace of Image", result)
+        k = cv.waitKey(30)
+        if k == 27:
+            return
+        ###modified ends
 
         if cv.waitKey(1) == 27:
             break
