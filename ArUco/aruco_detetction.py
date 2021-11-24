@@ -36,7 +36,7 @@ imgpoints = [] # 2d points in image plane.
 
 # iterating through all calibration images
 # in the folder
-images = glob.glob('calib_images/checkerboard/*.jpg')
+images = glob.glob('../calib_images/checkerboard/*.jpg')
 gray = np.ndarray(None)
 
 for fname in images:
