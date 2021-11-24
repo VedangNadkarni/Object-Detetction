@@ -118,7 +118,69 @@ def main():
         k = cv.waitKey(30)
         if k == 27:
             return
-            
+        elif k==ord('y'):
+            print(k)
+            if trackbarptr[0] < 50:
+                trackbarptr[0]+=1
+                cv.setTrackbarPos('%d'%0,'level control', trackbarptr[0])
+        elif k==ord('Y'):
+            print
+            if trackbarptr[0] > 0:
+                trackbarptr[0]-=1
+                cv.setTrackbarPos('%d'%0,'level control', trackbarptr[0])
+        elif k==ord('u'):
+            print(k)
+            if trackbarptr[1] < 50:
+                trackbarptr[1]+=1
+                cv.setTrackbarPos('%d'%1,'level control', trackbarptr[1])
+        elif k==ord('U'):
+            print
+            if trackbarptr[1] > 0:
+                trackbarptr[1]-=1
+                cv.setTrackbarPos('%d'%1,'level control', trackbarptr[1])
+        elif k==ord('i'):
+            print(k)
+            if trackbarptr[2] < 50:
+                trackbarptr[2]+=1
+                cv.setTrackbarPos('%d'%2,'level control', trackbarptr[2])
+        elif k==ord('I'):
+            print
+            if trackbarptr[2] > 0:
+                trackbarptr[2]-=1
+                cv.setTrackbarPos('%d'%2,'level control', trackbarptr[2])
+        elif k==ord('o'):
+            print(k)
+            if trackbarptr[3] < 50:
+                trackbarptr[3]+=1
+                cv.setTrackbarPos('%d'%3,'level control', trackbarptr[3])
+        elif k==ord('O'):
+            print
+            if trackbarptr[3] > 0:
+                trackbarptr[3]-=1
+                cv.setTrackbarPos('%d'%3,'level control', trackbarptr[3])
+        elif k==ord('p'):
+            print(k)
+            if trackbarptr[4] < 50:
+                trackbarptr[4]+=1
+                cv.setTrackbarPos('%d'%4,'level control', trackbarptr[4])
+        elif k==ord('P'):
+            print
+            if trackbarptr[4] > 0:
+                trackbarptr[4]-=1
+                cv.setTrackbarPos('%d'%4,'level control', trackbarptr[4])
+        elif k==ord('['):
+            print(k)
+            if trackbarptr[5] < 50:
+                trackbarptr[5]+=1
+                cv.setTrackbarPos('%d'%5,'level control', trackbarptr[5])
+        elif k==ord('{'):
+            print
+            if trackbarptr[5] > 0:
+                trackbarptr[5]-=1
+                cv.setTrackbarPos('%d'%5,'level control', trackbarptr[5])
+        else:
+            # print(k)
+            pass
         ###modified ends
         
         '''
