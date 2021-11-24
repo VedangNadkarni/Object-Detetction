@@ -57,8 +57,8 @@ def main():
     cap = video.create_capture(fn)
 
     leveln = 6
-    trackbarptr = [5 for i in range(leveln)]
-    
+    # trackbarptr = [5 for i in range(leveln)]
+    trackbarptr = [0,15,22,50,16,8]
     cv.namedWindow('level control')
     for i in xrange(leveln):
         cv.createTrackbar('%d'%i, 'level control',trackbarptr[i], 50, nothing)
