@@ -60,42 +60,42 @@ def main():
         laplace = cv.Laplacian(smoothed, ddepth, 5)
         # Converting back to uint8
         result = cv.convertScaleAbs(laplace, (sigma+1)*0.25)
-        # help(result)
+
         ###modified begins
         pil_image = Image.fromarray(result.astype(np.uint8))
         # pil_image = Image.open('Image.jpg').convert('RGB') 
         open_cv_image = np.array(pil_image)
         open_cv_image = open_cv_image[:, :, ::-1].copy()
         edged = cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2GRAY)
-        # edged = cv2.cvtColor(edged, cv2.COLOR_BGR2GRAY)
-        kernel = np.ones((5,5),np.uint8)
-        for i in range(5):
-            opening = cv2.morphologyEx(edged, cv2.MORPH_OPEN,kernel=kernel)
-            opening = cv2.morphologyEx(edged, cv2.MORPH_OPEN,kernel=kernel)
-            opening = cv2.morphologyEx(opening, cv2.MORPH_CLOSE,kernel=kernel)
-            opening = cv2.morphologyEx(opening, cv2.MORPH_CLOSE,kernel=kernel)
-            edged = opening
-        opening = cv2.morphologyEx(opening, cv2.MORPH_CLOSE,kernel=kernel)
-        edged = opening
-        opening = cv2.morphologyEx(opening, cv2.MORPH_CLOSE,kernel=kernel)
-        edged = opening
+        kernel = np.ones((3,3),np.uint8)
+        for i in range(1):
+            pass
+        
+        # cv2.imshow("edged1", edged)
+        cv2.imshow("edged3", edged)
+        kernel2 = np.array([[-1,-1,-1], 
+                       [-1, 9,-1],
+                       [-1,-1,-1]])
+        edged = cv2.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.
         cnts = cv2.findContours(edged, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
         screenCnt = []
         for c in cnts:
             peri = cv2.arcLength(c, True)
-            approx = cv2.approxPolyDP(c, 1, True)
+            approx = cv2.approxPolyDP(c, 15, True)
 
             if len(approx) == 7:
                 screenCnt.append(approx)
                 
         if screenCnt is not []:
-            cv2.drawContours(result, screenCnt, -1, (0, 255, 0), 3)
-            cv2.imshow("Arrow", result)
-            k = cv.waitKey(30)
-            if k == 27:
-                return
+            cv2.drawContours(frame, screenCnt, -1, (0, 255, 0), 3)
+            cv2.imshow("Arrow", frame)
+            cv2.imshow("edged", edged)
+
+            # k = cv.waitKey(30)
+            # if k == 27:
+            #     return
             # cv2.waitKey(0)
         # else:
         #     cv2.imshow("No arrow", result)
@@ -111,3 +111,9 @@ if __name__ == "__main__":
     print(__doc__)
     main()
     cv.destroyAllWindows()
+
+
+            # edged = cv2.morphologyEx(edged, cv2.MORPH_OPEN,kernel=kernel)
+            # edged = cv2.morphologyEx(edged, cv2.MORPH_CLOSE,kernel=kernel)
+            # edged = cv.dilate(edged,kernel,iterations = 1)
+            # edged = cv.erode(edged,kernel,iterations = 1)
