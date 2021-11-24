@@ -58,6 +58,7 @@ def main():
 
     leveln = 6
     trackbarptr = [5 for i in range(leveln)]
+    
     cv.namedWindow('level control')
     for i in xrange(leveln):
         cv.createTrackbar('%d'%i, 'level control',trackbarptr[i], 50, nothing)
@@ -85,10 +86,15 @@ def main():
         
         # cv.imshow("edged1", edged)
         # cv.imshow("edged3", edged)
+        kernels = [np.ones((2*i+1,2*i+1),np.uint8) for i in range (5)]
+        for i in range(5):
+            edged = cv.morphologyEx(edged, cv.MORPH_OPEN,kernel=kernels[i])
+
         kernel2 = np.array([[-1,-1,-1], 
                        [-1, 9,-1],
                        [-1,-1,-1]])
-        edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.        
+        edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.
+        
         cnts = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
         cnts = sorted(cnts, key=cv.contourArea, reverse=True)
