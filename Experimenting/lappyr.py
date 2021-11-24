@@ -94,7 +94,7 @@ def main():
         screenCnt = []
         for c in cnts:
             peri = cv.arcLength(c, True)
-            approx = cv.approxPolyDP(c, 15, True)
+            approx = cv.approxPolyDP(c, 0.03*peri, True)
 
             if len(approx) == 7:
                 screenCnt.append(approx)
