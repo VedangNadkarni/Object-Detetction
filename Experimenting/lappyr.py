@@ -88,7 +88,7 @@ def main():
         kernel2 = np.array([[-1,-1,-1], 
                        [-1, 9,-1],
                        [-1,-1,-1]])
-        edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.
+        edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.        
         cnts = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
         cnts = sorted(cnts, key=cv.contourArea, reverse=True)
@@ -115,7 +115,7 @@ def main():
         
         # Display Output
         cv.imshow("Laplace of Image", res)
-        k = cv.waitKey(30)
+        k = cv.waitKey(15)
         if k == 27:
             return
         elif k==ord('y'):
