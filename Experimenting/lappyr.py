@@ -63,6 +63,8 @@ def main():
     for i in xrange(leveln):
         cv.createTrackbar('%d'%i, 'level control',trackbarptr[i], 50, nothing)
 
+    arrow_pts = np.array([[255,27],[364,143],[224,260],[225,172],[19,172][19,114],[225,114]])
+
     while True:
         _ret, frame = cap.read()
         frame2 = frame
@@ -102,12 +104,16 @@ def main():
         cnts = imutils.grab_contours(cnts)
         cnts = sorted(cnts, key=cv.contourArea, reverse=True)
         screenCnt = []
-        for c in cnts:
+        homograph = []
+        for c in cnts and i in range(5):
             peri = cv.arcLength(c, True)
+            area = cv.contourArea(c)
             approx = cv.approxPolyDP(c, 0.03*peri, True)
 
-            if len(approx) == 7:
+            if len(approx) == 7:# and area/peri < 3.4 and area/peri > 2.2 :
                 screenCnt.append(approx)
+                homograph.append(cv.findHomography(approx, arrow_pts)
+)
                 
         if screenCnt is not []:
             cv.drawContours(frame, screenCnt, -1, (0, 255, 0), 3)
@@ -236,3 +242,16 @@ if __name__ == '__main__':
     print(__doc__)
     main()
     cv.destroyAllWindows()
+
+'''
+arrow pointing right of viewer
+top acute vertex: (255,27)
+front tip: (364,143)
+lower acute vertex: (224,260)
+lower join of rectangle with triangle: (225,172)
+lower vertex of tail: (19,172)
+upper vertex of tail: (19,114)
+lower join of rectangle with triangle: (225,114)
+
+All the vertices are in clockwise orientation
+'''
