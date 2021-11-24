@@ -72,7 +72,8 @@ def main():
 
         cv.imshow('laplacian pyramid filter', res)
         
-        pil_image = Image.fromarray(result.astype(np.uint8))
+        ###modified begins
+        pil_image = Image.fromarray(res.astype(np.uint8))
         # pil_image = Image.open('Image.jpg').convert('RGB') 
         open_cv_image = np.array(pil_image)
         open_cv_image = open_cv_image[:, :, ::-1].copy()
@@ -82,11 +83,11 @@ def main():
             pass
         
         # cv.imshow("edged1", edged)
-        cv.imshow("edged3", edged)
-        kernel2 = np.array([[-1,-1,-1], 
-                       [-1, 9,-1],
-                       [-1,-1,-1]])
-        edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.
+        # cv.imshow("edged3", edged)
+        # kernel2 = np.array([[-1,-1,-1], 
+        #                [-1, 9,-1],
+        #                [-1,-1,-1]])
+        # edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.
         cnts = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
         cnts = sorted(cnts, key=cv.contourArea, reverse=True)
@@ -108,11 +109,11 @@ def main():
             #     return
             # cv.waitKey(0)
         # else:
-        #     cv.imshow("No arrow", result)
+        #     cv.imshow("No arrow", res)
         #     cv.waitKey(0)
         
         # Display Output
-        cv.imshow("Laplace of Image", result)
+        cv.imshow("Laplace of Image", res)
         k = cv.waitKey(30)
         if k == 27:
             return
