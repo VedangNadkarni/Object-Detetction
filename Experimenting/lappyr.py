@@ -90,6 +90,9 @@ def main():
         for i in range(5):
             edged = cv.morphologyEx(edged, cv.MORPH_OPEN,kernel=kernels[i])
 
+        edged = cv.GaussianBlur(edged,(3,3),cv.BORDER_DEFAULT)
+        edged = cv.GaussianBlur(edged,(5,5),cv.BORDER_DEFAULT)
+
         kernel2 = np.array([[-1,-1,-1], 
                        [-1, 9,-1],
                        [-1,-1,-1]])
