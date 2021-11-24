@@ -15,6 +15,8 @@ Alexander Mordvintsev 6/10/12
 # Python 2/3 compatibility
 from __future__ import print_function
 import sys
+from PIL import Image
+import imutils
 PY3 = sys.version_info[0] == 3
 
 if PY3:
