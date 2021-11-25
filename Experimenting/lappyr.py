@@ -47,6 +47,10 @@ def merge_lappyr(levels):
     return np.uint8(np.clip(img, 0, 255))
 
 
+dist_coeffs = np.zeros((4,1)) #dummies, must be replaced by proper calibration
+camera_matrix = np.array([[538.43377452, 0., 338.31871591], [  0., 538.4746563, 237.83438816], [  0., 0., 1.]])
+
+
 def main():
     import sys
 
@@ -63,7 +67,9 @@ def main():
     for i in xrange(leveln):
         cv.createTrackbar('%d'%i, 'level control',trackbarptr[i], 50, nothing)
 
-    arrow_pts = np.array([[255,27],[364,143],[224,260],[225,172],[19,172][19,114],[225,114]])
+    arrow_pts = np.array([[255.0,27.0],[364.0,143.0],[224.0,260.0],[225.0,172.0],[19.0,172.0],[19.0,114.0],[225.0,114.0]])
+    arrow_pts3d = np.append(arrow_pts, np.array([np.zeros(7, dtype = float)]).T, axis=1)
+    # print (np.array([np.zeros(7)]).T.shape)
 
     while True:
         _ret, frame = cap.read()
@@ -105,18 +111,30 @@ def main():
         cnts = sorted(cnts, key=cv.contourArea, reverse=True)
         screenCnt = []
         homograph = []
-        for c in cnts and i in range(5):
+        Pnpout = [] 
+        i = 0
+        for c in cnts:
+            i+=1
             peri = cv.arcLength(c, True)
             area = cv.contourArea(c)
             approx = cv.approxPolyDP(c, 0.03*peri, True)
 
-            if len(approx) == 7:# and area/peri < 3.4 and area/peri > 2.2 :
-                screenCnt.append(approx)
-                homograph.append(cv.findHomography(approx, arrow_pts)
-)
+            if len(approx) == 7 and area/peri/peri < 0.03 and area/peri/peri > 0.018:
+                print (area/peri/peri)
+                if(cv.isContourConvex):
+                    screenCnt.append(approx)
+                # h_mat, status = homograph.append(cv.findHomography(approx, arrow_pts,cv.RANSAC))
+                # print(approx[:,0,:],'H', arrow_pts3d[[1,3,5,6]])
+                # Pnpout.append(cv.solvePnP(arrow_pts3d, approx[:,0,:], camera_matrix, dist_coeffs))
+                # Pnpout.append(cv.solvePnP(arrow_pts3d[1,3,5,6], approx[:,0,:], camera_matrix, dist_coeffs))
+
+            if(i>4):
+                break
                 
         if screenCnt is not []:
             cv.drawContours(frame, screenCnt, -1, (0, 255, 0), 3)
+            # cv.drawFrameAxes(frame, camera_matrix, dist_coeffs, Pnpout[1], Pnpout[2], 300, 3 )
+
             cv.imshow("Arrow", frame)
             cv.imshow("edged", edged)
 
@@ -130,7 +148,7 @@ def main():
         
         # Display Output
         cv.imshow("Laplace of Image", res)
-        k = cv.waitKey(15)
+        k = cv.waitKey(30)
         if k == 27:
             return
         elif k==ord('y'):
