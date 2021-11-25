@@ -62,7 +62,7 @@ def main():
 
     leveln = 6
     # trackbarptr = [5 for i in range(leveln)]
-    trackbarptr = [0,15,22,50,16,8]
+    trackbarptr = [0,15,22,30,25,10]
     cv.namedWindow('level control')
     for i in xrange(leveln):
         cv.createTrackbar('%d'%i, 'level control',trackbarptr[i], 50, nothing)
@@ -106,6 +106,9 @@ def main():
                        [-1,-1,-1]])
         edged = cv.filter2D(edged, -1, kernel2) # applying the sharpening kernel to the input image & displaying it.
         
+        _ , edged = cv.threshold(edged, 20,150,cv.THRESH_BINARY+cv.THRESH_OTSU)
+        # print(edged)
+
         cnts = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
         cnts = sorted(cnts, key=cv.contourArea, reverse=True)
@@ -119,8 +122,8 @@ def main():
             area = cv.contourArea(c)
             approx = cv.approxPolyDP(c, 0.03*peri, True)
 
-            if len(approx) == 7 and area/peri/peri < 0.03 and area/peri/peri > 0.018:
-                print (area/peri/peri)
+            if len(approx) == 7 and area/peri/peri < 0.04 and area/peri/peri > 0.015 and area < 11000:
+                print (area/peri/peri, area, 0.03*peri)
                 if(cv.isContourConvex):
                     screenCnt.append(approx)
                 # h_mat, status = homograph.append(cv.findHomography(approx, arrow_pts,cv.RANSAC))
