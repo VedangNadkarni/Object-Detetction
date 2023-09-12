@@ -57,8 +57,8 @@ for fname in images:
 
         # Draw and display the corners
         img = cv2.drawChessboardCorners(img, (aa,bb), corners2,ret)
-        cv2.imshow('img',img)
-        cv2.waitKey(0)
+        # cv2.imshow('img',img)
+        # cv2.waitKey(0)
 
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
@@ -74,7 +74,7 @@ while (True):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # set dictionary size depending on the aruco marker selected
-    aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
+    aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_1000)
 
     # detector parameters can be set here (List of detection parameters[3])
     parameters = aruco.DetectorParameters_create()
